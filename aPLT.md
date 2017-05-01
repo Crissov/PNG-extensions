@@ -36,6 +36,6 @@ Multiple `aPLT` chunks are permitted, but each must have a different palette nam
 
 Alternative palettes may appear as `aPLT` chunks in any PNG datastream. Alternative palettes form an essential part of the image data.
 
-For indexed-colour images, `aPLT` can be used to define alternative palettes for the `PLTE` chunk. The intention of this is to provide a simple method to display differently coloured variants of the same image.
+For indexed-colour images, `aPLT` can be used to define alternative palettes for the default `PLTE` chunk. The intention of this is to provide a simple method to display differently coloured variants of the same image which is frequently needed in sprite files.
 
-With `aPLT` multiple suggested palettes may be provided. A PNG decoder may choose an appropriate palette based on the name or external environment parameters, e.g. from fragment identifiers in URLs like `wine-glass.png#palette=Rosé`.
+With `aPLT`, multiple alternative palettes may be provided. A PNG decoder should choose an appropriate palette based on the name or external environment parameters, e.g. from fragment identifiers provided in URLs like `wine-glass.png#palette=Rosé`.
