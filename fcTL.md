@@ -1,6 +1,6 @@
 ## Chunk Sequence Numbers
 
-The `fcTL` and `fdAT` chunks have a 4-byte sequence number. Both chunk types share the sequence. The purpose of this number is to make fragments addressable.
+The `fcTL` and `fdAT` chunks have a 4-byte sequence number. Both chunk types share the sequence. The purpose of this number is to make fragments addressable, e.g. from fragment identifiers in URLs like `foo.png#2`.
 
 The first `fcTL` chunk must contain sequence number 0, and the sequence numbers in the remaining `fcTL` and `fdAT` chunks must be in order, with no gaps or duplicates.
 
@@ -46,12 +46,12 @@ The fragment must be rendered within the region defined by `x_offset`, `y_offset
 
 ### Constraints on frame regions:
 
-   `x_offset` &gte; 0
-   `y_offset` &gte; 0
-   `width`    > 0
-   `height`   > 0
-   `x_offset` + `width`  &lte; `IHDR` width
-   `y_offset` + `height` &lte; `IHDR` height
+ - `x_offset` ≥ 0
+ - `y_offset` ≥ 0
+ - `width`    > 0
+ - `height`   > 0
+ - `x_offset` + `width`  ≤ `IHDR` width
+ - `y_offset` + `height` ≤ `IHDR` height
 
 The `fcTL` chunk corresponding to the default image, if it exists, has these restrictions:
 
@@ -71,8 +71,17 @@ At least one `fdAT` chunk is required for each non-initial fragment. The compres
 | byte | name              | length         | description
 |----- |------------------ |--------------- |------------
 | 0    | `sequence_number` | (unsigned int) | Sequence number of the fragment chunk, starting from 0
-| 4    | `frame_data`      | X bytes        | Fragment data for this fragment
+| 4    | `fragment_data`   | _X_ bytes      | Fragment data for this fragment
 
 Each fragment inherits every property specified by any critical or ancillary chunks before the first `IDAT` in the file, except the width and height, which come from the `fcTL` chunk.
 
 If the PNG `pHYs` chunk is present, the PNG images and their `x_offset` and `y_offset` values must be scaled in the same way as the main image. Conceptually, such scaling occurs while mapping the output buffer onto the canvas.
+
+## `fMAP`: The Fragment Name Mapping Chunk
+
+| byte | name              | length                        | description
+|----- |------------------ |---------------                |------------
+| 0    | `sequence_number` | (unsigned int)                | Sequence number of the corresponding `fcTL` chunk
+| 4    | `fragment_name`   | 1-79 bytes (character string) | Fragment data for this fragment
+
+...
