@@ -19,7 +19,9 @@ The tables below illustrates the use of sequence numbers for images with more th
 | 4               | 5               | first `fdAT` for thirdd fragment
 | ...             | ...             |
 
-Decoders must treat out-of-order APNG chunks as an error. PNG editors should restore them to correct order using the sequence numbers.
+Decoders must treat out-of-order PNG chunks as an error. PNG editors should restore them to correct order using the sequence numbers.
+
+Issue: This is taken from the APNG specification, but I believe that `IDAT` should always have an integer sequence number less than 1, regardless of the position of the first `fcTL` chunk.
 
 ## `fcTL`: The Fragment Control Chunk
 
@@ -76,12 +78,3 @@ At least one `fdAT` chunk is required for each non-initial fragment. The compres
 Each fragment inherits every property specified by any critical or ancillary chunks before the first `IDAT` in the file, except the width and height, which come from the `fcTL` chunk.
 
 If the PNG `pHYs` chunk is present, the PNG images and their `x_offset` and `y_offset` values must be scaled in the same way as the main image. Conceptually, such scaling occurs while mapping the output buffer onto the canvas.
-
-## `fMAP`: The Fragment Name Mapping Chunk
-
-| byte | name              | length                        | description
-|----- |------------------ |---------------                |------------
-| 0    | `sequence_number` | (unsigned int)                | Sequence number of the corresponding `fcTL` chunk
-| 4    | `fragment_name`   | 1-79 bytes (character string) | Fragment data for this fragment
-
-...
