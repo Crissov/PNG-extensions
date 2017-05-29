@@ -1,4 +1,4 @@
-`fMAP`: The Fragment Name Mapping Chunk
+`fmAP`: The Fragment Name Mapping Chunk
 ---------------------------------------
 
 | byte | name              | length                        | description
